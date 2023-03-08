@@ -1,0 +1,30 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Bible Study with AI assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='bulma-tooltip.css') }}">
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+            <img src="../../static/logo.png" width="112" height="28">
+        </a>
+
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu is-active">
+        <div class="navbar-start">
+        </div>
+    </div>
+</nav>
+
+<section class="content">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+
+    {% for message in get_flashed_messages() %}
+        <div class="notification is-primary is-light">{{ message }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+</section>
+
