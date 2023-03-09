@@ -5,31 +5,49 @@
         </div>
         <div class="column">
             <h1 class="title">Search Bible</h1>
-            <form>
-                <input class="input" name="searchtext" type="text" type="submit" placeholder="type question">
+            <form method="POST">
+                <input class="input" name="searchtext" type="text" type="submit"
+                       value={{ session['question'] }}
+                       placeholder="type question">
             </form>
             <div class="block"></div>
-            <p> 还不确定问什么吗？可以试试以下问题：</p>
-            <ol>
-                <li>
-                    谁创造了世界万物？
-                </li>
-                <li>
-                    夏娃为什么吃禁果？
-                </li>
-                <li>
-                    耶稣为何为我们而死？
-                </li>
-                <li>
-                    耶稣还会再来吗？
-                </li>
-                <li>
-                    如何祷告？
-                </li>
-                <li>
-                    如何才能永生？
-                </li>
-            </ol>
+            {% if 'question' not in session.keys() %}
+                <p> 还不确定问什么吗？可以试试以下问题：</p>
+                <ol>
+                    <li>
+                        谁创造了世界万物？
+                    </li>
+                    <li>
+                        夏娃为什么吃禁果？
+                    </li>
+                    <li>
+                        耶稣为何为我们而死？
+                    </li>
+                    <li>
+                        耶稣还会再来吗？
+                    </li>
+                    <li>
+                        如何祷告？
+                    </li>
+                    <li>
+                        如何才能永生？
+                    </li>
+                </ol>
+            {% else %}
+                <table class="table is-bordered is-striped is is-narrow">
+                    <tbody>
+                    {% for one_answer in ans %}
+                    <tr>
+                        <td>
+                            <p>
+                                {{ one_answer }}
+                            </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
         <div class="column"></div>
     </div>
