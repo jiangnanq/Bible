@@ -5,17 +5,17 @@
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="#">
+        <a class="navbar-item" href="/">
             <img src="../../static/logo.png" width="112" height="28">
         </a>
 
     </div>
     <div id="navbarBasicExample" class="navbar-menu is-active">
         <div class="navbar-start">
-            <a class="navbar-item" href="">
-                查圣经
+            <a class="navbar-item" href="{{ url_for('search.search') }}">
+                问圣经
             </a>
-            <a class="navbar-item" href="">
+            <a class="navbar-item" href="{{ url_for('read.read', book=0, chapter=0) }}">
                 读圣经
             </a>
         </div>

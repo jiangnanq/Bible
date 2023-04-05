@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <h1 class="title">读圣经</h1>
+        <form method="POST">
+            <div class="columns">
+                <div class="column">
+                    <div class="control">
+                        <label class="label">选择书卷</label>
+                        <div class="select">
+                            <select name="book" onchange="this.form.submit()">
+                                {% for x in books %}
+                                    <option value="{{ x[0] }}"
+                                            {% if x[0] == session['select_book'] %}
+                                            selected
+                                            {% endif %}
+                                    >{{ x[1] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="control">
+                        <label class="label">选择章节</label>
+                        <div class="select">
+                            <select name="chapter" onchange="this.form.submit()">
+                                {% for x in session['chapters'] %}
+                                    <option value="{{ x }}"
+                                            {% if x == session['select_chapter'] %}
+                                            selected
+                                            {% endif %}
+                                    >{{ x }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="show_quote"
+                                   onchange="this.form.submit()"
+                                   value="{{ session['show_quote'] }} "
+                                    {% if session['show_quote'] %}
+                                   checked
+                                    {% endif %}
+                            >
+                            显示引用
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="block"></div>
+        <ol>
+            {% for onev in verses %}
+                <li>
+                    {{ onev[1] }}
+                    {% if session['show_quote'] %}
+                        <sup><a href="{{ url_for('read.verse', id=onev[2]) }}">{{ onev[3] }}</a></sup>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock %}>

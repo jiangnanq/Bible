@@ -1,54 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="columns">
-        <div class="column">
-        </div>
-        <div class="column">
-            <h1 class="title">Search Bible</h1>
-            <form method="POST">
-                <input class="input" name="searchtext" type="text" type="submit"
-                       value={{ session['question'] }}
-                       placeholder="type question">
-            </form>
-            <div class="block"></div>
-            {% if 'question' not in session.keys() %}
-                <p> 还不确定问什么吗？可以试试以下问题：</p>
-                <ol>
-                    <li>
-                        谁创造了世界万物？
-                    </li>
-                    <li>
-                        夏娃为什么吃禁果？
-                    </li>
-                    <li>
-                        耶稣为何为我们而死？
-                    </li>
-                    <li>
-                        耶稣还会再来吗？
-                    </li>
-                    <li>
-                        如何祷告？
-                    </li>
-                    <li>
-                        如何才能永生？
-                    </li>
-                </ol>
-            {% else %}
-                <table class="table is-bordered is-striped is is-narrow">
-                    <tbody>
-                    {% for one_answer in ans %}
+    <div class="container">
+        <h1 class="title">问圣经</h1>
+        <p>可以试试问问以下问题：</p>
+        <p>
+           {% for oneq in sample_questions %}
+               {{ oneq }}
+            {% endfor %}
+        </p>
+        <div class="block"></div>
+
+        <form method="POST">
+            <input class="input" name="searchtext" type="text" type="submit"
+                   placeholder="输入问题"
+                   value={{ question }}>
+        </form>
+        <div class="block"></div>
+        {% if gpt != '' %}
+            <h2>ChatGPT的回答</h2>
+            <p>
+                {{ gpt }}
+            </p>
+        {% endif %}
+        {% if verses %}
+            <h2>相关圣经经文</h2>
+            <table class="table is-bordered is-striped is is-narrow">
+                <tbody>
+                {% for one_answer in verses %}
                     <tr>
                         <td>
                             <p>
-                                {{ one_answer }}
+                                {{ one_answer['name'] }}
                             </p>
+                            {% for oneverse in one_answer['verse'] %}
+                                {{ oneverse[0] }}  {{ oneverse[1] }}
+                            {% endfor %}
                         </td>
                     </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
-        </div>
-        <div class="column"></div>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     </div>
 {% endblock %}>

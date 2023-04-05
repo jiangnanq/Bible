@@ -1,9 +1,12 @@
 from flask import Flask, redirect, url_for, session
 import search
+import read
 import os
 from datetime import timedelta
+from db import *
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z'
 
 app.config.from_mapping(
         SECRET_KEY='dev',
@@ -16,6 +19,7 @@ def before_request():
     app.permanent_session_lifetime = timedelta(hours=1)
 
 app.register_blueprint(search.bp)
+app.register_blueprint(read.bp)
 
 @app.route('/')
 def root():  # put application's code here

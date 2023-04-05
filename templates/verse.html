@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <h1 class="title">{{ title }}</h1>
+        <div class="block"></div>
+        <h1 class="title">参考经文</h1>
+        {% for oneref in ref %}
+            <li>
+                <a href="{{url_for('read.read', book=oneref[2], chapter=oneref[3])}}">{{ oneref[0] }}</a>
+                {{ oneref[1] }}
+            </li>
+        {% endfor %}
+    </div>
+{% endblock %}>
