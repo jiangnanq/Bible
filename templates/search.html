@@ -1,19 +1,26 @@
 {% extends 'base.html' %}
+
+{% block title %}问圣经{% endblock %}
 {% block content %}
     <div class="container">
         <h1 class="title">问圣经</h1>
-        <p>可以试试问问以下问题：</p>
-        <p>
-           {% for oneq in sample_questions %}
-               {{ oneq }}
-            {% endfor %}
-        </p>
         <div class="block"></div>
 
         <form method="POST">
             <input class="input" name="searchtext" type="text" type="submit"
                    placeholder="输入问题"
                    value={{ question }}>
+        </form>
+        <div class="block"></div>
+        <p>
+            可以尝试问以下问题：
+        </p>
+        <form method="POST">
+            <button class="button is-primary" type="submit" name="q1" >{{ sample_questions[0][1] }}</button>
+            <button class="button is-primary" type="submit" name="q2" >{{ sample_questions[1][1] }}</button>
+            <button class="button is-primary" type="submit" name="q3" >{{ sample_questions[2][1] }}</button>
+            <button class="button is-primary" type="submit" name="q4" >{{ sample_questions[3][1] }}</button>
+            <button class="button is-primary" type="submit" name="q5" >{{ sample_questions[4][1] }}</button>
         </form>
         <div class="block"></div>
         {% if gpt != '' %}
