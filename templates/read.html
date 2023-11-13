@@ -38,6 +38,13 @@
                 </div>
                 <div class="column">
                     <div class="control">
+                        <button class="button is-primary" type="submit" name="copy"
+                                onclick="copyToClipboard()"
+                        >复制</button>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="control">
                         <label class="checkbox">
                             <input type="checkbox" name="show_quote"
                                    onchange="this.form.submit()"
@@ -51,17 +58,52 @@
                     </div>
                 </div>
             </div>
+            <div class="block"></div>
+            <ol>
+                {% for onev in verses %}
+                    <li>
+                        <label class="checkbox">
+                            <input type="checkbox" name="verse" value="{{ onev[0] }}"
+                                   onchange="this.form.submit()"
+                                    {% if onev[1] in session['select_verses'] %}
+                                   checked
+                                    {% endif %}
+                            >
+                            {{ onev[1] }}
+                        </label>
+                        {% if session['show_quote'] %}
+                            <sup><a href="{{ url_for('read.verse', id=onev[2]) }}">{{ onev[3] }}</a></sup>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
         </form>
-        <div class="block"></div>
-        <ol>
-            {% for onev in verses %}
-                <li>
-                    {{ onev[1] }}
-                    {% if session['show_quote'] %}
-                        <sup><a href="{{ url_for('read.verse', id=onev[2]) }}">{{ onev[3] }}</a></sup>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ol>
     </div>
+    <input type="text" id="copyText" value="{{ session['select_verses'] }}" style="display: none;">
+    <script>
+        function copyToClipboard() {
+            /* Get the text input element */
+            var copyText = document.getElementById("copyText");
+
+            /* Create a temporary textarea element */
+            var textarea = document.createElement("textarea");
+            textarea.value = copyText.value;
+
+            /* Append the textarea to the DOM (make it invisible) */
+            document.body.appendChild(textarea);
+
+            /* Select the text inside the textarea */
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the selected text to the clipboard using the Clipboard API */
+            document.execCommand("copy");
+
+            /* Remove the temporary textarea element */
+            document.body.removeChild(textarea);
+
+            /* Provide feedback to the user */
+            alert("Text copied to clipboard: " + copyText.value);
+        }
+    </script>
 {% endblock %}>

@@ -10,11 +10,15 @@ def read(book=0, chapter=0):  # put application's code here
         session['select_book'] = 1
     if 'select_chapter' not in session.keys():
         session['select_chapter'] = 1
+    if 'select_verses' not in session.keys():
+        session['select_verses'] = ''
     if 'show_quote' not in session.keys():
         session['show_quote'] = False
     if 'chapters' not in session.keys():
         session['chapters'] = [x['c'] for x in get_db().execute(
             f'select distinct c from t_chn where b={session["select_book"]}').fetchall()]
+    if 'selectall' not in request.form.keys():
+        session['selectall'] = False
 
     if int(book) > 0:
         session['select_book'] = int(book)
@@ -26,6 +30,21 @@ def read(book=0, chapter=0):  # put application's code here
             session['select_chapter'] = 1
 
     if request.method == 'POST':
+        if 'verse' in request.form.keys():
+            verses_id = sorted(request.form.getlist('verse'), key=lambda x: int(x))
+            print(verses_id)
+            def getverse(v):
+                return get_db().execute(f'select t from t_chn where b={session["select_book"]} and c={session["select_chapter"]} and v={v}').fetchone()['t']
+            if verses_id:
+                session['select_verses'] = ' '.join([getverse(x) for x in verses_id])
+                bookname = get_db().execute(f'select FullName from BibleID where SN={session["select_book"]}').fetchone()['FullName']
+                if len(verses_id) == 1:
+                    session['select_verses'] = f'{bookname} {session["select_chapter"]}:{verses_id[0]} ' + session['select_verses']
+                else:
+                    session['select_verses'] = f'{bookname} {session["select_chapter"]}:{verses_id[0]}-{verses_id[-1]} ' + session['select_verses']
+                print(session['select_verses'])
+        else:
+            session['select_verses'] = ''
         if 'show_quote' in request.form.keys() and request.form['show_quote']:
             session['show_quote'] = True
         else:
